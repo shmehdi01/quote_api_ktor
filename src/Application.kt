@@ -36,9 +36,6 @@ fun Application.module(testing: Boolean = false) {
 
     DatabaseFactory.init()
     Migration.migrate()
-//    transaction {
-//        SchemaUtils.create(Users)
-//    }
 
     routing {
         get("/") {

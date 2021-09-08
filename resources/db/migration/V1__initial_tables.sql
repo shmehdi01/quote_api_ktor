@@ -6,3 +6,12 @@ create TABLE Users (
     active tinyint,
     primary key(id)
 )
+
+create TABLE Quote (
+    id int auto_increment,
+    quote varchar(100) not null,
+    author varchar(100) unique,
+    userId int,
+    active tinyint,
+    primary key(id)
+)
