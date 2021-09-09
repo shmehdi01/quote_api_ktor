@@ -7,7 +7,7 @@ create TABLE Users (
     primary key(id)
 )
 
-create TABLE Quote (
+create TABLE Quotes (
     id int auto_increment,
     quote varchar(100) not null,
     author varchar(100) unique,
