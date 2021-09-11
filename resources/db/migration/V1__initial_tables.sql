@@ -5,7 +5,7 @@ create TABLE Users (
     password varchar(100),
     active tinyint,
     primary key(id)
-)
+);
 
 create TABLE Quotes (
     id int auto_increment,
@@ -15,4 +15,11 @@ create TABLE Quotes (
     userId int,
     active tinyint,
     primary key(id)
-)
+);
+
+create TABLE Categories (
+    id int auto_increment,
+    name varchar(100) not null,
+    active tinyint,
+    primary key(id)
+);
