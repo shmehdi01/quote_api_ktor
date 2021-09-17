@@ -2,8 +2,8 @@ package api.shmehdi.qouteapp.data.repository
 
 import api.shmehdi.qouteapp.data.services.UserService
 import api.shmehdi.qouteapp.database.dbQuery
-import api.shmehdi.qouteapp.models.User
-import api.shmehdi.qouteapp.models.Users
+import api.shmehdi.qouteapp.data.models.entities.User
+import api.shmehdi.qouteapp.data.models.entities.Users
 import api.shmehdi.qouteapp.utils.toUser
 import org.jetbrains.exposed.sql.*
 import java.lang.Exception

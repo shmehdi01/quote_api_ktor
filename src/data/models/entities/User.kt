@@ -1,7 +1,5 @@
-package api.shmehdi.qouteapp.models
+package api.shmehdi.qouteapp.data.models.entities
 
-import api.shmehdi.qouteapp.models.Brands.autoIncrement
-import api.shmehdi.qouteapp.models.Brands.primaryKey
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Table
 

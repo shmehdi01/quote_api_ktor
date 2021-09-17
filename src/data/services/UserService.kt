@@ -1,7 +1,6 @@
 package api.shmehdi.qouteapp.data.services
 
-import api.shmehdi.qouteapp.models.User
-import java.util.*
+import api.shmehdi.qouteapp.data.models.entities.User
 
 
 interface UserService {

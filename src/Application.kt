@@ -3,9 +3,8 @@ package api.shmehdi.qouteapp
 import api.shmehdi.qouteapp.database.DatabaseFactory
 import api.shmehdi.qouteapp.database.Migration
 import api.shmehdi.qouteapp.database.dbQuery
-import api.shmehdi.qouteapp.models.Brand
-import api.shmehdi.qouteapp.models.Brands
-import api.shmehdi.qouteapp.models.Users
+import api.shmehdi.qouteapp.data.models.entities.Brand
+import api.shmehdi.qouteapp.data.models.entities.Brands
 import api.shmehdi.qouteapp.routes.registerUserRoute
 import io.ktor.application.*
 import io.ktor.auth.*
@@ -20,9 +19,7 @@ import kotlinx.html.h1
 import kotlinx.html.li
 import kotlinx.html.ul
 import org.jetbrains.exposed.sql.ResultRow
-import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.selectAll
-import org.jetbrains.exposed.sql.transactions.transaction
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 

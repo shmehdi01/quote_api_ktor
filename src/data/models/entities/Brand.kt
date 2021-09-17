@@ -1,4 +1,4 @@
-package api.shmehdi.qouteapp.models
+package api.shmehdi.qouteapp.data.models.entities
 
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Table

@@ -3,7 +3,7 @@ package api.shmehdi.qouteapp.routes
 import api.shmehdi.qouteapp.data.dto.BaseResponse
 import api.shmehdi.qouteapp.data.repository.UserRepository
 import api.shmehdi.qouteapp.data.services.UserService
-import api.shmehdi.qouteapp.models.User
+import api.shmehdi.qouteapp.data.models.entities.User
 import api.shmehdi.qouteapp.utils.so
 import io.ktor.application.*
 import io.ktor.request.*
