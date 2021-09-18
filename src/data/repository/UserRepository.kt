@@ -33,7 +33,7 @@ class UserRepository : UserService {
 
     override suspend fun addUser(user: User) {
         dbQuery {
-            Users.insert {
+           val x = Users.insert {
                 it[name] = user.name
                 it[email] = user.email
                 it[password] = user.password

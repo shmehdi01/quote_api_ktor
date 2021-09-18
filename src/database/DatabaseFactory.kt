@@ -6,9 +6,12 @@ import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.ktor.config.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.transactions.transaction
+import java.lang.Exception
 
 object DatabaseFactory {
 
@@ -37,6 +40,7 @@ suspend fun <T> dbQuery(block: () -> T): T =
     withContext(Dispatchers.IO) {
         transaction { block() }
     }
+
 
 
 

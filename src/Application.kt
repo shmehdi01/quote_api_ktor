@@ -5,6 +5,7 @@ import api.shmehdi.qouteapp.database.Migration
 import api.shmehdi.qouteapp.database.dbQuery
 import api.shmehdi.qouteapp.data.models.entities.Brand
 import api.shmehdi.qouteapp.data.models.entities.Brands
+import api.shmehdi.qouteapp.routes.registerAuthRoute
 import api.shmehdi.qouteapp.routes.registerUserRoute
 import io.ktor.application.*
 import io.ktor.auth.*
@@ -35,7 +36,9 @@ fun Application.module(testing: Boolean = false) {
     DatabaseFactory.init()
     Migration.migrate()
 
+    registerAuthRoute()
     registerUserRoute()
+
     routing {
         get("/") {
             call.respondText("HELLO WORLD!", contentType = ContentType.Text.Plain)
