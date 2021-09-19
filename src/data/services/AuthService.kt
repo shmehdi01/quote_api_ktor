@@ -1,5 +1,6 @@
 package api.shmehdi.qouteapp.data.services
 
+import api.shmehdi.qouteapp.authorization.hash
 import api.shmehdi.qouteapp.data.models.dto.LoginRequest
 import api.shmehdi.qouteapp.data.models.dto.RegisterRequest
 import api.shmehdi.qouteapp.data.models.dto.toUser
@@ -19,7 +20,7 @@ class AuthService(private val userDao: UserDao) {
      suspend fun login(request: LoginRequest): User? {
          val user = userDao.getUser(Email(request.email))
          if (user != null)
-             if (user.password == request.password)
+             if (user.password == hash(request.password))
                  return user
          return null
     }

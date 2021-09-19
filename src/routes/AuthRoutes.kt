@@ -1,6 +1,8 @@
 package api.shmehdi.qouteapp.routes
 
+import api.shmehdi.qouteapp.authorization.JWTConfig
 import api.shmehdi.qouteapp.data.dto.BaseResponse
+import api.shmehdi.qouteapp.data.models.dto.AuthResponse
 import api.shmehdi.qouteapp.data.models.dto.LoginRequest
 import api.shmehdi.qouteapp.data.models.dto.RegisterRequest
 import api.shmehdi.qouteapp.data.repository.AuthRepository
@@ -16,24 +18,48 @@ import io.ktor.routing.*
 fun Route.authRoute() {
 
     val authRepository = AuthRepository(AuthService(userDao = UserDaoImpl()))
+    val jwtConfig = JWTConfig()
 
     routeV1 {
-        post  ("login") {
+        post("login") {
             val request = call.receive<LoginRequest>()
 
             when (val resource = authRepository.login(request)) {
-                is Resource.Error -> call.respond(HttpStatusCode.fromValue(resource.errorCode), BaseResponse.error(resource.errorMessage))
-                is Resource.Success -> call.respond(BaseResponse.success(resource.data))
+                is Resource.Error -> call.respond(
+                    HttpStatusCode.fromValue(resource.errorCode),
+                    BaseResponse.error(resource.errorMessage)
+                )
+                is Resource.Success -> {
+                    call.respond(
+                        BaseResponse.success(
+                            AuthResponse(
+                                token = jwtConfig.createToken(resource.data),
+                                user = resource.data
+                            )
+                        )
+                    )
+                }
             }
         }
 
         post("register") {
             val request = call.receive<RegisterRequest>()
-//            val user = authRepository.register(request)
-//            call.respond(BaseResponse.success(it, "Success"))
+
             when (val resource = authRepository.register(request)) {
-                is Resource.Error -> call.respond(HttpStatusCode.fromValue(resource.errorCode), BaseResponse.error(resource.errorMessage))
-                is Resource.Success -> call.respond(BaseResponse.success(resource.data))
+                is Resource.Error -> call.respond(
+                    HttpStatusCode.fromValue(resource.errorCode),
+                    BaseResponse.error(resource.errorMessage)
+                )
+                is Resource.Success -> {
+                    call.respond(
+                        BaseResponse.success(
+                            AuthResponse(
+                                token = jwtConfig.createToken(resource.data),
+                                user = resource.data
+                            )
+                        )
+                    )
+                }
             }
         }
     }

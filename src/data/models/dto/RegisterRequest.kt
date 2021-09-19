@@ -1,5 +1,6 @@
 package api.shmehdi.qouteapp.data.models.dto
 
+import api.shmehdi.qouteapp.authorization.hash
 import api.shmehdi.qouteapp.data.models.entities.User
 import api.shmehdi.qouteapp.errors.ValidationError
 
@@ -26,6 +27,6 @@ fun RegisterRequest.toUser() = User(
     id = -1,
     name = name,
     email = email,
-    password = password,
+    password = hash(password),
     isActive = true
 )

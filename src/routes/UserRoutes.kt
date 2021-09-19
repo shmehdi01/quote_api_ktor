@@ -6,6 +6,7 @@ import api.shmehdi.qouteapp.data.services.UserService
 import api.shmehdi.qouteapp.data.models.entities.User
 import api.shmehdi.qouteapp.utils.so
 import io.ktor.application.*
+import io.ktor.auth.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
@@ -51,7 +52,9 @@ fun Route.userRoute() {
 
 fun Application.registerUserRoute() {
     routing {
-        userRoute()
+        authenticate("auth-jwt") {
+            userRoute()
+        }
     }
 }
 
