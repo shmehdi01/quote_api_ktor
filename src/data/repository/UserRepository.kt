@@ -50,7 +50,8 @@ class UserRepository : UserService {
 
     override suspend fun updateUser(id: Int, user: User) {
         dbQuery {
-            Users.update {
+            Users.update({Users.id eq id}) {
+
                 it[name] = user.name
                 it[email] = user.email
                 it[password] = user.password
