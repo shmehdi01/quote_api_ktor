@@ -38,53 +38,5 @@ fun Application.module(testing: Boolean = false) {
 
     registerAuthRoute()
     registerUserRoute()
-
-    routing {
-        get("/") {
-            call.respondText("HELLO WORLD!", contentType = ContentType.Text.Plain)
-        }
-
-        get("/brand") {
-
-
-            call.respond(BrandService().getBrands())
-
-
-        }
-
-        get("/html-dsl") {
-            call.respondHtml {
-                body {
-                    h1 { +"HTML" }
-                    ul {
-                        for (n in 1..10) {
-                            li { +"$n" }
-                        }
-                    }
-                }
-            }
-        }
-
-
-
-        get("/json/gson") {
-            call.respond(mapOf("hello" to "world"))
-        }
-    }
 }
 
-
-class  BrandService {
-    suspend fun getBrands(): List<Brand> = dbQuery {
-        Brands.selectAll().map {
-            toBrand(it) }
-    }
-}
-
-fun toBrand(row: ResultRow): Brand {
-    return Brand(
-        id = row[Brands.id],
-        name = row[Brands.name],
-        photo = row[Brands.photo]
-    )
-}
