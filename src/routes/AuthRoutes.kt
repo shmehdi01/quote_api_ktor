@@ -1,7 +1,7 @@
 package api.shmehdi.qouteapp.routes
 
 import api.shmehdi.qouteapp.authorization.JWTConfig
-import api.shmehdi.qouteapp.data.dto.BaseResponse
+import api.shmehdi.qouteapp.data.models.dto.BaseResponse
 import api.shmehdi.qouteapp.data.models.dto.AuthResponse
 import api.shmehdi.qouteapp.data.models.dto.LoginRequest
 import api.shmehdi.qouteapp.data.models.dto.RegisterRequest
