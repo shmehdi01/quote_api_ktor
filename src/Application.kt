@@ -6,6 +6,7 @@ import api.shmehdi.qouteapp.database.Migration
 import api.shmehdi.qouteapp.database.dbQuery
 import api.shmehdi.qouteapp.data.models.entities.Brand
 import api.shmehdi.qouteapp.data.models.entities.Brands
+import api.shmehdi.qouteapp.data.repository.UserRepository
 import api.shmehdi.qouteapp.routes.registerAuthRoute
 import api.shmehdi.qouteapp.routes.registerUserRoute
 import io.ktor.application.*
@@ -17,10 +18,7 @@ import io.ktor.html.*
 import io.ktor.http.*
 import io.ktor.response.*
 import io.ktor.routing.*
-import kotlinx.html.body
-import kotlinx.html.h1
-import kotlinx.html.li
-import kotlinx.html.ul
+import kotlinx.html.*
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.selectAll
 
@@ -49,5 +47,53 @@ fun Application.module(testing: Boolean = false) {
 
     registerAuthRoute()
     registerUserRoute()
+    htmlUserRoute()
+}
+
+private fun Application.htmlUserRoute() {
+    val repo = UserRepository()
+    routing {
+        get("html") {
+            val users = repo.getUsers()
+            call.respondHtml {
+                body {
+                    h1 {
+                        + "USERS"
+                    }
+                    table {
+
+                        thead {
+                            tr {
+                                td {
+                                    + "Name"
+                                }
+
+                                td {
+                                    + "Email"
+                                }
+                            }
+                        }
+
+                        tbody {
+                            users.forEach {
+
+                                tr {
+                                    td {
+                                        + it.name
+                                    }
+                                    td {
+                                        + it.email
+                                    }
+                                }
+
+                            }
+                        }
+
+                    }
+
+                }
+            }
+        }
+    }
 }
 
