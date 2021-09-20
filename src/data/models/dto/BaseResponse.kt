@@ -1,4 +1,4 @@
-package api.shmehdi.qouteapp.data.dto
+package api.shmehdi.qouteapp.data.models.dto
 
 data class BaseResponse<T>(
     val status: Boolean,
