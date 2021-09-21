@@ -1,5 +1,6 @@
 package api.shmehdi.qouteapp.data.models.entities
 
+import api.shmehdi.qouteapp.errors.ValidationError
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Table
 
@@ -11,6 +12,11 @@ data class User(
     val email: String,
     val isActive: Boolean
 )
+
+@Throws(ValidationError::class)
+fun User.validate(): User {
+    return this
+}
 
 object Users: Table() {
     val id: Column<Int> = integer("id").autoIncrement()

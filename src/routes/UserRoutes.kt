@@ -1,10 +1,13 @@
 package api.shmehdi.qouteapp.routes
 
 import api.shmehdi.qouteapp.data.models.dto.BaseResponse
+import api.shmehdi.qouteapp.data.models.entities.User
 import api.shmehdi.qouteapp.data.repository.UserRepository
 import api.shmehdi.qouteapp.data.services.UserService
-import api.shmehdi.qouteapp.data.models.entities.User
+import api.shmehdi.qouteapp.database.impl.UserDaoImpl
 import api.shmehdi.qouteapp.utils.so
+import api.shmehdi.qouteapp.vo.Resource
+import api.shmehdi.qouteapp.vo.errorResponse
 import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.request.*
@@ -13,7 +16,7 @@ import io.ktor.routing.*
 
 fun Route.userRoute() {
 
-    val userRepository: UserService = UserRepository()
+    val userRepository = UserRepository(userService = UserService(userDao = UserDaoImpl()))
 
     routeV1("/users") {
         get {
@@ -23,29 +26,44 @@ fun Route.userRoute() {
         get("{id}") {
             val id = call.parameters["id"]?.toIntOrNull() ?: 0
             if (id == 0) call.respond(BaseResponse.error("User Id not found"))
-            val user = userRepository.getUser(id)
-            call.respond(((user != null) so BaseResponse.success(user)) ?: BaseResponse.error("No User Found"))
+
+            when (val resource = userRepository.getUser(id)) {
+                is Resource.Error -> resource.errorResponse(call)
+                is Resource.Success -> BaseResponse.success(resource.data)
+
+            }
         }
 
         post {
             val user = call.receive<User>()
-            userRepository.addUser(user)
-            call.respond(BaseResponse.emptySuccess(message = "User stored correctly",))
+            when (val resource = userRepository.addUser(user)) {
+                is Resource.Error -> resource.errorResponse(call)
+                is Resource.Success -> BaseResponse.success(resource.data)
+            }
         }
 
         put("{id}") {
             val id = call.parameters["id"]?.toIntOrNull() ?: 0
             if (id == 0) call.respond(BaseResponse.error("User Id not found"))
             val user = call.receive<User>()
-            userRepository.updateUser(id, user)
-            call.respond(BaseResponse.emptySuccess(message =  "User updated successfully",))
+
+            when (val resource = userRepository.updateUser(id, user)) {
+                is Resource.Error -> resource.errorResponse(call)
+                is Resource.Success -> BaseResponse.success(resource.data)
+            }
         }
 
         delete("{id}") {
             val id = call.parameters["id"]?.toIntOrNull() ?: 0
             if (id == 0) call.respond(BaseResponse.error("User Id not found"))
+
             userRepository.deleteUser(id)
-            call.respond(BaseResponse.emptySuccess( message = "User delete successfully"))
+            when (val resource = userRepository.deleteUser(id)) {
+                is Resource.Error -> resource.errorResponse(call)
+                is Resource.Success -> BaseResponse.success(resource.data)
+
+            }
+
         }
     }
 }

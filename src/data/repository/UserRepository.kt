@@ -4,59 +4,32 @@ import api.shmehdi.qouteapp.data.services.UserService
 import api.shmehdi.qouteapp.database.dbQuery
 import api.shmehdi.qouteapp.data.models.entities.User
 import api.shmehdi.qouteapp.data.models.entities.Users
+import api.shmehdi.qouteapp.data.models.entities.validate
 import api.shmehdi.qouteapp.utils.toUser
 import org.jetbrains.exposed.sql.*
 import java.lang.Exception
 
-class UserRepository : UserService {
+class UserRepository(private val userService: UserService) : BaseRepository {
 
 
-    override suspend fun getUsers(): List<User> = dbQuery { Users.selectAll().map { toUser(it) } }
+     suspend fun getUsers() = safeCall {
+         userService.getUsers()
+     }
 
-    override suspend fun getUser(id: Int): User? =
-        dbQuery {
-            val query = Users.select {
-                Users.id eq id
-            }.limit(1)
+     suspend fun getUser(id: Int) = safeCall {
+         userService.getUser(id)
+     }
 
-            try {
-                return@dbQuery query.single().let {
-                    toUser(it)
-                }
-            }catch (e :Exception) {
-                return@dbQuery null
-            }
+     suspend fun addUser(user: User) = safeCall {
+         userService.addUser(user.validate())
+     }
 
+     suspend fun deleteUser(id: Int) = safeCall {
+         userService.deleteUser(id)
+     }
 
-        }
-
-
-    override suspend fun addUser(user: User) {
-        dbQuery {
-           val x = Users.insert {
-                it[name] = user.name
-                it[email] = user.email
-                it[password] = user.password
-                it[isActive] = true
-            }
-        }
-    }
-
-    override suspend fun deleteUser(id: Int) {
-        dbQuery {
-            Users.deleteWhere { Users.id eq id }
-        }
-    }
-
-    override suspend fun updateUser(id: Int, user: User) {
-        dbQuery {
-            Users.update({Users.id eq id}) {
-
-                it[name] = user.name
-                it[email] = user.email
-                it[password] = user.password
-            }
-        }
-    }
+     suspend fun updateUser(id: Int, user: User) = safeCall {
+         userService.updateUser(id, user)
+     }
 
 }
