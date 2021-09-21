@@ -19,5 +19,5 @@ object Quotes: Table() {
     val author: Column<String> = varchar("author", 100)
     val authorId: Column<String> = varchar("author", 100)
     val userId: Column<Int> = integer("userId")
-    val isActive: Column<String> = varchar("active", 100)
+    val isActive: Column<Boolean> = bool("active")
 }
