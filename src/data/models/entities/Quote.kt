@@ -16,7 +16,7 @@ fun Quote.validate(): Quote = this
 
 object Quotes: Table() {
     val id: Column<Int> = integer("id").autoIncrement().primaryKey()
-    val quote: Column<String> = varchar("name", 100)
+    val quote: Column<String> = varchar("quote", 100)
     val author: Column<String> = varchar("author", 100)
     val authorId: Column<String> = varchar("authorId", 100)
     val userId: Column<Int> = integer("userId")
