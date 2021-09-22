@@ -5,6 +5,8 @@ import api.shmehdi.qouteapp.data.models.entities.Quote
 import api.shmehdi.qouteapp.data.repository.QuoteRepository
 import api.shmehdi.qouteapp.data.services.QuoteService
 import api.shmehdi.qouteapp.database.impl.QuoteDaoImpl
+import api.shmehdi.qouteapp.utils.DELETED_SUCCESSFULLY_MESSAGE
+import api.shmehdi.qouteapp.utils.UPDATED_SUCCESSFULLY_MESSAGE
 import api.shmehdi.qouteapp.vo.Resource
 import api.shmehdi.qouteapp.vo.errorResponse
 import io.ktor.application.*
@@ -51,7 +53,7 @@ fun Routing.quoteRoutes() {
 
             when(val resource = quoteRepository.updateQuote(id,quote)){
                 is Resource.Error -> resource.errorResponse(call)
-                is Resource.Success -> call.respond(BaseResponse.success(resource.data))
+                is Resource.Success -> call.respond(BaseResponse.success(resource.data, UPDATED_SUCCESSFULLY_MESSAGE))
             }
         }
 
@@ -61,7 +63,7 @@ fun Routing.quoteRoutes() {
 
             when(val resource = quoteRepository.deleteQuote(id)){
                 is Resource.Error -> resource.errorResponse(call)
-                is Resource.Success -> call.respond(BaseResponse.success(resource.data))
+                is Resource.Success -> call.respond(BaseResponse.success(resource.data, DELETED_SUCCESSFULLY_MESSAGE))
             }
         }
     }

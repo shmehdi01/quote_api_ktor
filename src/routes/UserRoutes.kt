@@ -5,6 +5,8 @@ import api.shmehdi.qouteapp.data.models.entities.User
 import api.shmehdi.qouteapp.data.repository.UserRepository
 import api.shmehdi.qouteapp.data.services.UserService
 import api.shmehdi.qouteapp.database.impl.UserDaoImpl
+import api.shmehdi.qouteapp.utils.DELETED_SUCCESSFULLY_MESSAGE
+import api.shmehdi.qouteapp.utils.UPDATED_SUCCESSFULLY_MESSAGE
 import api.shmehdi.qouteapp.utils.so
 import api.shmehdi.qouteapp.vo.Resource
 import api.shmehdi.qouteapp.vo.errorResponse
@@ -51,7 +53,7 @@ fun Route.userRoute() {
 
             when (val resource = userRepository.updateUser(id, user)) {
                 is Resource.Error -> resource.errorResponse(call)
-                is Resource.Success -> call.respond(BaseResponse.success(resource.data))
+                is Resource.Success -> call.respond(BaseResponse.success(resource.data, UPDATED_SUCCESSFULLY_MESSAGE))
             }
         }
 
@@ -61,7 +63,7 @@ fun Route.userRoute() {
 
             when (val resource = userRepository.deleteUser(id)) {
                 is Resource.Error -> resource.errorResponse(call)
-                is Resource.Success -> call.respond(BaseResponse.success(resource.data))
+                is Resource.Success -> call.respond(BaseResponse.success(resource.data, DELETED_SUCCESSFULLY_MESSAGE))
             }
         }
     }
