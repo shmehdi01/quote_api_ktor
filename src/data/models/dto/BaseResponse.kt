@@ -1,5 +1,7 @@
 package api.shmehdi.qouteapp.data.models.dto
 
+import api.shmehdi.qouteapp.utils.so
+
 data class BaseResponse<T>(
     val status: Boolean,
     val message: String?,
@@ -11,7 +13,7 @@ data class BaseResponse<T>(
         fun <T> success(data : T , message: String? = null) = BaseResponse(
             status = true,
             message = message,
-            data = data
+            data = (data !is Unit) so data
         )
 
         fun emptySuccess(message: String? = null) = BaseResponse(
