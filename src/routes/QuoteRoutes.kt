@@ -21,7 +21,7 @@ fun Routing.quoteRoutes() {
         get {
             when(val resource = quoteRepository.getQuotes()){
                 is Resource.Error -> resource.errorResponse(call)
-                is Resource.Success -> BaseResponse.success(resource.data)
+                is Resource.Success -> call.respond(BaseResponse.success(resource.data))
             }
         }
 
@@ -31,7 +31,7 @@ fun Routing.quoteRoutes() {
 
             when(val resource = quoteRepository.getQuote(id)){
                 is Resource.Error -> resource.errorResponse(call)
-                is Resource.Success -> BaseResponse.success(resource.data)
+                is Resource.Success -> call.respond(BaseResponse.success(resource.data))
             }
         }
 
@@ -40,7 +40,7 @@ fun Routing.quoteRoutes() {
 
             when(val resource = quoteRepository.addQuote(quote)){
                 is Resource.Error -> resource.errorResponse(call)
-                is Resource.Success -> BaseResponse.success(resource.data)
+                is Resource.Success -> call.respond(BaseResponse.success(resource.data))
             }
         }
 
@@ -51,7 +51,7 @@ fun Routing.quoteRoutes() {
 
             when(val resource = quoteRepository.updateQuote(id,quote)){
                 is Resource.Error -> resource.errorResponse(call)
-                is Resource.Success -> BaseResponse.success(resource.data)
+                is Resource.Success -> call.respond(BaseResponse.success(resource.data))
             }
         }
 
@@ -61,7 +61,7 @@ fun Routing.quoteRoutes() {
 
             when(val resource = quoteRepository.deleteQuote(id)){
                 is Resource.Error -> resource.errorResponse(call)
-                is Resource.Success -> BaseResponse.success(resource.data)
+                is Resource.Success -> call.respond(BaseResponse.success(resource.data))
             }
         }
     }
