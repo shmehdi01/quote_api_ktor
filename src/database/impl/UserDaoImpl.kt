@@ -5,6 +5,7 @@ import api.shmehdi.qouteapp.data.models.entities.Users
 import api.shmehdi.qouteapp.database.dao.UserDao
 import api.shmehdi.qouteapp.database.dbQuery
 import api.shmehdi.qouteapp.utils.getSingleOrNull
+import api.shmehdi.qouteapp.utils.isValid
 import api.shmehdi.qouteapp.utils.toUser
 import api.shmehdi.qouteapp.vo.Email
 import api.shmehdi.qouteapp.vo.Id
@@ -18,7 +19,7 @@ class UserDaoImpl : UserDao {
         dbQuery {
             Users.select {
                 Users.id eq id.id
-            }.limit(1).getSingleOrNull {
+            }.getSingleOrNull {
                 toUser(it)
             }
         }
@@ -54,9 +55,12 @@ class UserDaoImpl : UserDao {
     override suspend fun updateUser(id: Id, user: User) {
         dbQuery {
             Users.update({Users.id eq id.id}) {
-                it[name] = user.name
-                it[email] = user.email
-                it[password] = user.password
+                if(user.name.isValid())
+                    it[name] = user.name
+                if (user.email.isValid())
+                    it[email] = user.email
+                if(user.password.isValid())
+                    it[password] = user.password
             }
         }
     }
