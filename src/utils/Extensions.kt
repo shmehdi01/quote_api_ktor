@@ -5,6 +5,8 @@ import org.jetbrains.exposed.sql.ResultRow
 
 infix fun <T> Boolean.so(data: T): T? = if (this) data else null
 
+fun String?.isValid() = !isNullOrEmpty()
+
 fun <T> Query.getSingleOrNull(f: (row: ResultRow) -> T): T? {
 
     return try {
