@@ -47,53 +47,6 @@ fun Application.module(testing: Boolean = false) {
 
     registerAuthRoute()
     registerUserRoute()
-    htmlUserRoute()
 }
 
-private fun Application.htmlUserRoute() {
-    val repo = UserRepository()
-    routing {
-        get("html") {
-            val users = repo.getUsers()
-            call.respondHtml {
-                body {
-                    h1 {
-                        + "USERS"
-                    }
-                    table {
-
-                        thead {
-                            tr {
-                                td {
-                                    + "Name"
-                                }
-
-                                td {
-                                    + "Email"
-                                }
-                            }
-                        }
-
-                        tbody {
-                            users.forEach {
-
-                                tr {
-                                    td {
-                                        + it.name
-                                    }
-                                    td {
-                                        + it.email
-                                    }
-                                }
-
-                            }
-                        }
-
-                    }
-
-                }
-            }
-        }
-    }
-}
 
