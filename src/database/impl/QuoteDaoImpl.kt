@@ -5,6 +5,7 @@ import api.shmehdi.qouteapp.data.models.entities.Quotes
 import api.shmehdi.qouteapp.database.dao.QuoteDao
 import api.shmehdi.qouteapp.database.dbQuery
 import api.shmehdi.qouteapp.utils.getSingleOrNull
+import api.shmehdi.qouteapp.utils.isValid
 import api.shmehdi.qouteapp.utils.toQuote
 import org.jetbrains.exposed.sql.*
 
@@ -15,7 +16,9 @@ class QuoteDaoImpl : QuoteDao {
             return@dbQuery Quotes.insert {
                 it[quote] = q.quote
                 it[author] = q.author
-                it[authorId] = q.author
+                q.authorId?.let { id ->
+                    it[authorId] = id
+                }
                 it[userId] = q.userId
                 it[isActive] = true
 
@@ -25,7 +28,7 @@ class QuoteDaoImpl : QuoteDao {
 
     override suspend fun updateQuote(id: Int, q: Quote) {
         dbQuery {
-            Quotes.update({ Quotes.id eq q.id }) {
+            Quotes.update({ Quotes.id eq id }) {
                 it[quote] = q.quote
             }
         }
