@@ -20,7 +20,10 @@ fun Route.userRoute() {
 
     routeV1("/users") {
         get {
-            call.respond(BaseResponse.success(userRepository.getUsers()))
+            when (val resource = userRepository.getUsers()) {
+                is Resource.Error -> resource.errorResponse(call)
+                is Resource.Success -> call.respond(BaseResponse.success(resource.data))
+            }
         }
 
         get("{id}") {
@@ -29,8 +32,7 @@ fun Route.userRoute() {
 
             when (val resource = userRepository.getUser(id)) {
                 is Resource.Error -> resource.errorResponse(call)
-                is Resource.Success -> BaseResponse.success(resource.data)
-
+                is Resource.Success -> call.respond(BaseResponse.success(resource.data))
             }
         }
 
@@ -38,7 +40,7 @@ fun Route.userRoute() {
             val user = call.receive<User>()
             when (val resource = userRepository.addUser(user)) {
                 is Resource.Error -> resource.errorResponse(call)
-                is Resource.Success -> BaseResponse.success(resource.data)
+                is Resource.Success -> call.respond(BaseResponse.success(resource.data))
             }
         }
 
@@ -49,7 +51,7 @@ fun Route.userRoute() {
 
             when (val resource = userRepository.updateUser(id, user)) {
                 is Resource.Error -> resource.errorResponse(call)
-                is Resource.Success -> BaseResponse.success(resource.data)
+                is Resource.Success -> call.respond(BaseResponse.success(resource.data))
             }
         }
 
@@ -57,13 +59,10 @@ fun Route.userRoute() {
             val id = call.parameters["id"]?.toIntOrNull() ?: 0
             if (id == 0) call.respond(BaseResponse.error("User Id not found"))
 
-            userRepository.deleteUser(id)
             when (val resource = userRepository.deleteUser(id)) {
                 is Resource.Error -> resource.errorResponse(call)
-                is Resource.Success -> BaseResponse.success(resource.data)
-
+                is Resource.Success -> call.respond(BaseResponse.success(resource.data))
             }
-
         }
     }
 }
