@@ -10,6 +10,7 @@ import api.shmehdi.qouteapp.utils.UPDATED_SUCCESSFULLY_MESSAGE
 import api.shmehdi.qouteapp.vo.Resource
 import api.shmehdi.qouteapp.vo.errorResponse
 import io.ktor.application.*
+import io.ktor.auth.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
@@ -37,33 +38,35 @@ fun Routing.quoteRoutes() {
             }
         }
 
-        post {
-            val quote = call.receive<Quote>()
+        authenticate("auth-jwt") {
+            post {
+                val quote = call.receive<Quote>()
 
-            when(val resource = quoteRepository.addQuote(quote)){
-                is Resource.Error -> resource.errorResponse(call)
-                is Resource.Success -> call.respond(BaseResponse.success(resource.data))
+                when(val resource = quoteRepository.addQuote(quote)){
+                    is Resource.Error -> resource.errorResponse(call)
+                    is Resource.Success -> call.respond(BaseResponse.success(resource.data))
+                }
             }
-        }
 
-        put("{id}") {
-            val id = call.parameters["id"]?.toIntOrNull() ?: 0
-            if (id == 0) call.respond(BaseResponse.error("Id not found"))
-            val quote = call.receive<Quote>()
+            put("{id}") {
+                val id = call.parameters["id"]?.toIntOrNull() ?: 0
+                if (id == 0) call.respond(BaseResponse.error("Id not found"))
+                val quote = call.receive<Quote>()
 
-            when(val resource = quoteRepository.updateQuote(id,quote)){
-                is Resource.Error -> resource.errorResponse(call)
-                is Resource.Success -> call.respond(BaseResponse.success(resource.data, UPDATED_SUCCESSFULLY_MESSAGE))
+                when(val resource = quoteRepository.updateQuote(id,quote)){
+                    is Resource.Error -> resource.errorResponse(call)
+                    is Resource.Success -> call.respond(BaseResponse.success(resource.data, UPDATED_SUCCESSFULLY_MESSAGE))
+                }
             }
-        }
 
-        delete("{id}") {
-            val id = call.parameters["id"]?.toIntOrNull() ?: 0
-            if (id == 0) call.respond(BaseResponse.error("Id not found"))
+            delete("{id}") {
+                val id = call.parameters["id"]?.toIntOrNull() ?: 0
+                if (id == 0) call.respond(BaseResponse.error("Id not found"))
 
-            when(val resource = quoteRepository.deleteQuote(id)){
-                is Resource.Error -> resource.errorResponse(call)
-                is Resource.Success -> call.respond(BaseResponse.success(resource.data, DELETED_SUCCESSFULLY_MESSAGE))
+                when(val resource = quoteRepository.deleteQuote(id)){
+                    is Resource.Error -> resource.errorResponse(call)
+                    is Resource.Success -> call.respond(BaseResponse.success(resource.data, DELETED_SUCCESSFULLY_MESSAGE))
+                }
             }
         }
     }
