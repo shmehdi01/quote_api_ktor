@@ -16,6 +16,9 @@ class AuthService(private val userDao: UserDao) {
 
     @Throws(UserAlreadyExist::class)
     suspend fun register(request: RegisterRequest): User? {
+        if (userDao.getUser(Email(request.email)) != null)
+            throw UserAlreadyExist("User already exist with email ${request.email}")
+
         val id = userDao.addUser(request.toUser()) ?: -1
         return  if (id != -1) userDao.getUser(Id(id))
         else null
