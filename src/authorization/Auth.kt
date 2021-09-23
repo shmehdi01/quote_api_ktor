@@ -5,7 +5,7 @@ import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 
 private val algorithm = "HmacSHA1"
-private val hashKey = "syedhussainmehdi".toByteArray()
+private val hashKey = System.getenv("HASH_KEY").toByteArray()
 private val hmacKey = SecretKeySpec(hashKey, algorithm)
 
 fun hash(password: String): String {
